@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.account',  # user accounts (reg/log)
     'allauth.socialaccount',  # social media accounts
     'home',
+    'products',
 ]
 
 MIDDLEWARE = [
