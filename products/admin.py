@@ -1,7 +1,8 @@
 from django.contrib import admin
 from .models import Product, Category
 
-# Register your models here.
+# Extend built-in model admin class to view on /admin/.
+
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -14,12 +15,18 @@ class ProductAdmin(admin.ModelAdmin):
     )
 
     ordering = ('sku',)
+    # sort products by 'sku'
+    # reverse it using -'sku'
+    # comma needed for tuple
+    
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = (
         'friendly_name',
         'name',
     )
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Category, CategoryAdmin)

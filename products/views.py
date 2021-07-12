@@ -17,3 +17,4 @@ def all_products(request):
     }
 
     return render(request, 'products/products.html', context)
+    # context returns things back to template

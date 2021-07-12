@@ -5,7 +5,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = 'Categories'
-        # Change name in /admin/ page
+        # Change name in /admin/ page from Django default
 
     name = models.CharField(max_length=254)
     friendly_name = models.CharField(max_length=254, null=True, blank=True)
@@ -14,6 +14,7 @@ class Category(models.Model):
         return self.name
 
     def get_friendly_name(self):
+        # model method - return friendly name
         return self.friendly_name
 
 
