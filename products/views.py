@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.db.models import Q
+from .models import Product, Category
 # Q returns 'or' logic for queries
 # Allows search for name AND description
-from .models import Product, Category
 
 # Create your views here.
 
@@ -32,6 +32,10 @@ def all_products(request):
                 # if user is sorting by name
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
+            
+            if sortkey == 'category':
+                # if user is sorting by category
+                sortkey = 'category__name'
 
             if 'direction' in request.GET:
                 # if user is sorting in decending
@@ -60,7 +64,7 @@ def all_products(request):
             # 'icontains' specific class contains query
             queries = Q(name__icontains=query) | Q(description__icontains=query)
             products = products.filter(queries)
-    
+
     # return current sorting method to template
     current_sorting = f'{sort}_{direction}'
 
@@ -68,6 +72,7 @@ def all_products(request):
         'products': products,
         'search_term': query,
         'current_categories': categories,
+        'current_sorting': current_sorting,
     }
 
     return render(request, 'products/products.html', context)
