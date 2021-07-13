@@ -92,4 +92,8 @@ body {
     .header-container {
         padding-top: 164px;
     }
+
+    body {
+        height: calc(100vh - 116px);
+    }
 }
