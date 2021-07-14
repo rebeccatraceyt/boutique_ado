@@ -18,22 +18,40 @@ def bag_contents(request):
     # check if bag variable exists
 
     # for items/quantity in session 'bag'
-    for item_id, quantity in bag.items():
-        # get product
-        product = get_object_or_404(Product, pk=item_id)
+    for item_id, item_data in bag.items():
 
-        # add  quantity to price for total
-        total += quantity * product.price
+        # checking whether item_data = int
+        # if int = just quantity
+        # if not int = includes size (dictionary)
+        if isinstance(item_data, int):
+            # get product
+            product = get_object_or_404(Product, pk=item_id)
 
-        # increment product count by quantity
-        product_count += quantity
+            # add  quantity to price for total
+            total += item_data * product.price
 
-        # bag items dictionary update
-        bag_items.append({
-            'item_id': item_id,
-            'quantity': quantity,
-            'product': product,
-        })
+            # increment product count by quantity
+            product_count += item_data
+
+            # bag items dictionary update
+            bag_items.append({
+                'item_id': item_id,
+                'quantity': item_data,
+                'product': product,
+            })
+        else:
+            product = get_object_or_404(Product, pk=item_id)
+            # iterate through inner dict
+            # render sizes in template
+            for size, quantity in item_data['items_by_size'].items():
+                total += quantity * product.price
+                product_count += quantity
+                bag_items.append({
+                    'item_id': item_id,
+                    'quantity': item_data,
+                    'product': product,
+                    'size': size,
+                })
 
     if total < settings.FREE_DELIVERY_THRESHOLD:
         delivery = total * Decimal(settings.STANDARD_DELIVERY_PERCENTAGE)
