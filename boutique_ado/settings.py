@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # The following apps are required:
     'django.contrib.sites',  # used by socials for callback
     'allauth',  # allauth itself
     'allauth.account',  # user accounts (reg/log)
@@ -72,7 +71,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                # required by allauth - to access http request object
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'bag.contexts.bag_contents',

@@ -33,7 +33,7 @@ def all_products(request):
                 # if user is sorting by name
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
-            
+
             if sortkey == 'category':
                 # if user is sorting by category
                 sortkey = 'category__name'
@@ -45,7 +45,7 @@ def all_products(request):
                 # decending = '-'
                 if direction == 'desc':
                     sortkey = f'-{sortkey}'
-            
+
             # actually sort the product
             products = products.order_by(sortkey)
 
