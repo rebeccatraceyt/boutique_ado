@@ -42,8 +42,10 @@ class Order(models.Model):
         # use sum function accross all lineitem total fields
         # add new field to query 'lineitem_total__sum'
         # set the order total to that
+        # 'or 0' prevents error if line item is manually deleted
+        #   order total is '0' not 'none'
         self.order_total = self.lineitems.aggregate(
-            Sum('lineitem_total'))['lineitem_total__sum']
+            Sum('lineitem_total'))['lineitem_total__sum'] or 0
         # calculate the delivery cost
         if self.order_total < settings.FREE_DELIVERY_THRESHOLD:
             self.delivery_cost = self.order_total * settings.STANDARD_DELIVERY_PERCENTAGE / 100
