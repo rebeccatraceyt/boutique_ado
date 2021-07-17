@@ -72,6 +72,10 @@ form.addEventListener('submit', function(ev) {
     card.update({ 'disabled': true});
     $('#submit-button').attr('disabled', true);
 
+    // Trigger overlay and fade out form
+    $('#payment-form').fadeToggle(100);
+    $('#loading-overlay').fadeToggle(100);
+
     // Call Confirm Card method
     stripe.confirmCardPayment(clientSecret, {
         // provide card to stripe
@@ -91,6 +95,8 @@ form.addEventListener('submit', function(ev) {
 
             // if there is an error, re-enable card element and submit button
             $(errorDiv).html(html);
+            $('#payment-form').fadeToggle(100);
+            $('#loading-overlay').fadeToggle(100);
             card.update({ 'disabled': false});
             $('#submit-button').attr('disabled', false);
         } else {
