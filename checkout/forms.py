@@ -23,7 +23,6 @@ class OrderForm(forms.ModelForm):
             'full_name': 'Full Name',
             'email': 'Email Address',
             'phone_number': 'Phone Number',
-            'country': 'Country',
             'postcode': 'Postal Code',
             'town_or_city': 'Town or City',
             'street_address1': 'Street Address 1',
@@ -36,15 +35,16 @@ class OrderForm(forms.ModelForm):
 
         # iterate through form fields
         for field in self.fields:
+            # remove 'country' placeholder
+            if field != 'country':
+                # Add * to placeholder, if required
+                if self.fields[field].required:
+                    placeholder = f'{placeholders[field]} *'
+                else:
+                    placeholder = placeholders[field]
 
-            # Add * to placeholder, if required
-            if self.fields[field].required:
-                placeholder = f'{placeholders[field]} *'
-            else:
-                placeholder = placeholders[field]
-
-            # setting placeholder attributes to dictionary values
-            self.fields[field].widget.attrs['placeholder'] = placeholder
+                # setting placeholder attributes to dictionary values
+                self.fields[field].widget.attrs['placeholder'] = placeholder
 
             # add CSS class
             self.fields[field].widget.attrs['class'] = 'stripe-style-input'
