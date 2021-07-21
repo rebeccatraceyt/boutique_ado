@@ -17,6 +17,7 @@ class UserProfileForm(forms.ModelForm):
 
         # dictionary for form fields
         placeholders = {
+            'default_full_name': 'Full Name',
             'default_phone_number': 'Phone Number',
             'default_postcode': 'Postal Code',
             'default_town_or_city': 'Town or City',
@@ -26,7 +27,7 @@ class UserProfileForm(forms.ModelForm):
         }
 
         # cursor will start in full name field
-        self.fields['default_phone_number'].widget.attrs['autofocus'] = True
+        self.fields['default_full_name'].widget.attrs['autofocus'] = True
 
         # iterate through form fields
         for field in self.fields:
