@@ -2,6 +2,7 @@ from django.http import HttpResponse
 
 from .models import Order, OrderLineItem
 from products.models import Product
+from profiles.models import UserProfile
 
 import json
 import time
@@ -49,6 +50,22 @@ class StripeWH_Handler:
         for field, value in shipping_details.address.items():
             if value == "":
                 shipping_details.address[field] = None
+        
+        # Update profile info if save_info is checked
+        profile = None
+        username = intent.metadata.username
+        if username != 'AnonymousUser':
+            profile = UserProfile.objects.get(user__username=username)
+            if save_info:
+                # if save_info is checked, add the data to profile
+                profile.defult_phone_number__iexact=shipping_details.phone
+                profile.defult_country__iexact=shipping_details.address.country
+                profile.defult_postcode__iexact=shipping_details.address.postal_code
+                profile.defult_town_or_city__iexact=shipping_details.address.city
+                profile.defult_street_address1__iexact=shipping_details.address.line1
+                profile.defult_street_address2__iexact=shipping_details.address.line2
+                profile.defult_county__iexact=shipping_details.address.state
+                profile.save()
 
         # Check if order exists
         # if exists - return response
@@ -103,6 +120,7 @@ class StripeWH_Handler:
                 # objects.create useing data from payment intent
                 order = Order.objects.create(
                     full_name=shipping_details.name,
+                    user_profile=profile,
                     email=billing_details.email,
                     phone_number=shipping_details.phone,
                     country=shipping_details.address.country,
