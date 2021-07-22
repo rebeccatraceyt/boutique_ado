@@ -63,7 +63,20 @@ def checkout(request):
         }
         order_form = OrderForm(form_data)
         if order_form.is_valid():
-            order = order_form.save()
+
+            # Get payment intent id if order is valid
+            # false commit prevents multiple save events being executed
+            order = order_form.save(commit=False)
+            pid = request.POST.get('client_secret').split('_secret')[0]
+            order.stripe_pid = pid
+
+            # dump shopping bag in json string
+            order.original_bag = json.dumps(bag)
+
+            # save order
+            order.save()
+
+            # get products
             for item_id, item_data in bag.items():
                 try:
                     # get product id out of bag
