@@ -46,7 +46,7 @@
                             <p class="mb-0 text-black font-weight-bold">Order Date</p>
                         </div>
                         <div class="col-12 md-4 text-md-right">
-                            <p class="mb-0">{{ order.order_date }}</p>
+                            <p class="mb-0">{{ order.date }}</p>
                         </div>
                     </div>
 
@@ -57,12 +57,12 @@
                     </div>
                     {% for item in order.lineitems.all %}
                         <div class="row">
-                            <div class="col-12 md-4">
+                            <div class="col-12 col-md-4">
                                 <p class="small mb-0 text-black font-weight-bold">
-                                    {{ item.product_name }}{% if item.product_size %} - Size {{ item.product.size|upper }}{% endif %}
+                                    {{ item.product.name }}{% if item.product_size %} - Size {{ item.product.size|upper }}{% endif %}
                                 </p>
                             </div>
-                            <div class="col-12 md-8 text-md-right">
+                            <div class="col-12 col-md-8 text-md-right">
                                 <p class="small mb-0">{{ item.quantity }} @ ${{ item.product.price }} each</p>
                             </div>
                         </div>
