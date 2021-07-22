@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
-from django.db.models import Q
-from .models import Product, Category
 from django.db.models.functions import Lower
+from django.db.models import Q
 # Q returns 'or' logic for queries
 # Allows search for name AND description
 
-# Create your views here.
+from .models import Product, Category
+from .forms import ProductForm
 
 
 def all_products(request):
@@ -93,3 +93,17 @@ def product_detail(request, product_id):
 
     return render(request, 'products/product_details.html', context)
     # context returns things back to template
+
+
+def add_product(request):
+    """
+    Add a product to the store
+    """
+
+    form = ProductForm()
+    template = 'products/add_product.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
