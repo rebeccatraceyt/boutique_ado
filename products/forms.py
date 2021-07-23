@@ -12,7 +12,6 @@ class ProductForm(forms.ModelForm):
         # defines model and fields to include
         model = Product
         fields = '__all__'
-    
 
     def __init__(self, *args, **kwargs):
         # override the init method
@@ -30,3 +29,4 @@ class ProductForm(forms.ModelForm):
         # iterate through fields with css for consistency
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'border-black rounded-0'
+ 
