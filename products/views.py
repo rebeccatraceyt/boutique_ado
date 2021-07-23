@@ -104,9 +104,9 @@ def add_product(request):
         # to capture the image, if one is added
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            product = form.save()
             messages.success(request, 'Successfully added product!')
-            return redirect(reverse('add_product'))
+            return redirect(reverse('product_detail', args=[product.id]))
         else:
             messages.error(request, 'Failed to add product \
                 Please ensure all fields are valid')
@@ -152,3 +152,14 @@ def edit_product(request, product_id):
     }
 
     return render(request, template, context)
+
+
+def delete_product(request, product_id):
+    """
+    Delete a product from the store
+    """
+    # get product (or 404)
+    product = get_object_or_404(Product, pk=product_id)
+    product.delete()
+    messages.success(request, 'Product Deleted!')
+    return redirect(reverse('products'))
